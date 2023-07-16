@@ -106,7 +106,7 @@
 		1232237A28EA969000173B40 = {
 			isa = PBXGroup;
 			children = (
-				1232238528EA969000173B40 /* TestDemo */,
+				1232238528EA969000173B40 /* SwiftUIBottomSheet */,
 				1232238428EA969000173B40 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,7 +119,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1232238528EA969000173B40 /* TestDemo */ = {
+		1232238528EA969000173B40 /* SwiftUIBottomSheet */ = {
 			isa = PBXGroup;
 			children = (
 				120A177E2A62F2BB0011FCDF /* BottomSheet */,
@@ -129,7 +129,7 @@
 				1232238C28EA969000173B40 /* Preview Content */,
 				12F9EA1B29751E1C00ED209B /* Localizable.strings */,
 			);
-			path = TestDemo;
+			path = SwiftUIBottomSheet;
 			sourceTree = "<group>";
 		};
 		1232238C28EA969000173B40 /* Preview Content */ = {
