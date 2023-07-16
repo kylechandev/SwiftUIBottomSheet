@@ -118,42 +118,15 @@ extension View {
                 getSheetViewIOS16(allowDismiss: allowDismiss, scrollable: scrollable, sheetContent: sheetContent(value))
             }
         } else {
-            // bug!!!
             // iOS 15 UIKit WAY
             // USE SwiftUIModal Package
             self.bottomSheetIOS15Custom(item: item, content: { v in sheetContent(v) })
                 .bottomSheetIOS15Configuration(with(.default) { $0.allowDismiss = allowDismiss })
+                .onChange(of: item.wrappedValue) { newValue in
+                    if newValue == nil {
+                        onDismiss?()
+                    }
+                }
         }
-    }
-
-    @ViewBuilder
-    func getios15<Item: Identifiable & Equatable, Content: View>(
-        item: Binding<Item?>,
-        @ViewBuilder sheetContent: @escaping (Item) -> Content
-    ) -> some View {
-        if let value = item.wrappedValue {
-            sheetContent(value)
-        } else {
-            EmptyView()
-        }
-    }
-}
-
-extension View {
-
-    /// debug log
-    /// - Parameter text: log
-    func viewDebugPrint(_ text: @escaping () -> String) -> some View {
-        print(text())
-
-        return self
-    }
-}
-
-var isIOS16Dot4: Bool {
-    if #available(iOS 16.4, *) {
-        return true
-    } else {
-        return false
     }
 }

@@ -51,7 +51,7 @@ struct ContentView: View {
                 dismissable.toggle()
             } label: {
                 Text(dismissable ? "Allow Dismiss" : "Disallow Dismiss")
-            } 
+            }
         }
         .fitBottomSheet(
             isPresented: $showSheet,
@@ -62,7 +62,7 @@ struct ContentView: View {
                 print("dismiss callback: \(dismissTimes)")
             }
         ) {
-            SheetView(scrollable: $scrollable, isPresented: $showSheet)
+            SheetView(scrollable: $scrollable, isPresented: $showSheet, itemP: .constant(nil))
         }
         .fitBottomSheet(
             item: $showSheetItem,
@@ -73,7 +73,7 @@ struct ContentView: View {
                 print("dismiss callback: \(dismissTimes)")
             }
         ) { a in
-            SheetView(scrollable: $scrollable, isPresented: $showSheet, item: a.string)
+            SheetView(scrollable: $scrollable, isPresented: .constant(false), itemP: $showSheetItem, item: a.string)
         }
     }
 }
@@ -85,15 +85,21 @@ struct SheetView: View {
     @Binding var scrollable: Bool
 
     @Binding var isPresented: Bool
+    @Binding var itemP: StringIdentifiable?
 
     @State private var title: String = "Title"
-    
+
     @State private var showingItem: String? = nil
-    
-    init(scrollable: Binding<Bool>, isPresented: Binding<Bool>, item: String? = nil) {
+
+    init(
+        scrollable: Binding<Bool>,
+        isPresented: Binding<Bool>,
+        itemP : Binding<StringIdentifiable?>,
+        item: String? = nil
+    ) {
         _scrollable = scrollable
         _isPresented = isPresented
-        
+        _itemP = itemP
         _showingItem = .init(wrappedValue: item)
     }
 
@@ -130,20 +136,24 @@ struct SheetView: View {
                 title = "Changed Title"
             }
         Text("Some very long text ...")
-        
+
         Divider()
-        
+
         Text("Item: \(String(describing: showingItem))" + " (click to change)")
             .foregroundColor(.blue)
             .onTapGesture {
                 showingItem = "changed item"
             }
-        
+
         Color.red
             .frame(width: 200, height: 200)
+            .overlay {
+                Text("Tap to dismiss").foregroundColor(.white)
+            }
             .onTapGesture {
-                // presentationMode.wrappedValue.dismiss()
+                // presentationMode.wrappedValue.dismiss() // 不能这样 dismiss，会丢失动画效果
                 isPresented = false
+                itemP = nil // 没有动画效果
             }
     }
 }
